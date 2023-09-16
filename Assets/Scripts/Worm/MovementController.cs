@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public class MovementController : MonoBehaviour
 {
-    private float _moveSpeed = 7;
+    private float _moveSpeed = 5;
     private float _jumpSpeed = 7;
     public bool _canMove = true;
     private Rigidbody2D _rb;

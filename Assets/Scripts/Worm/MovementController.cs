@@ -43,14 +43,23 @@ public class MovementController : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         // TODO Check if top of box is > bottom of player (stuck to side)
-        
-        _canJump = collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Book");
-        _jumpsRemaining = 2;
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            _canJump = true;    
+            _jumpsRemaining = 2;
+            Debug.Log("COLLIDED GROUND: resetting jumps");
+            return;
+        }
     }
 
     void OnCollisionExit2D(Collision2D collision)
     {
-        _canJump = false;
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            _canJump = false;
+            Debug.Log("LEFT GROUND: resetting jumps");
+            return;
+        }
     }
     
 }

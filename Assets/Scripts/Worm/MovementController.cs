@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -17,10 +18,13 @@ public class MovementController : MonoBehaviour
     private bool _inBook = false;
     private Book _currentBook = null;
     private Vector3 _lastPos;
+    private float _xLastPos;
+    private PowerController _powerController;
 
     void Start() {
         _rb = GetComponent<Rigidbody2D>();
         _lastPos = transform.position;
+        _powerController = gameObject.GetComponent<PowerController>();
     }
 
     void Update()
@@ -28,6 +32,12 @@ public class MovementController : MonoBehaviour
         MoveHorizontal();
         Jump();
         Dive();
+    }
+
+    void FixedUpdate()
+    {
+        IncreasePower();
+        Debug.Log(_powerController.GetCurrent());
     }
 
     private void MoveHorizontal()
@@ -71,10 +81,19 @@ public class MovementController : MonoBehaviour
             return;
         }
 
-        if (_canJump || _jumpsRemaining > 0)
+        if (_canJump) // Normal jump
         {
             PerformJump();
+            return;
         }
+
+        if (_jumpsRemaining > 0 && _powerController.CanDoubleJump()) // Double Jump
+        {
+            _powerController.ModifyDoubleJump();
+            PerformJump();
+            return;
+        }
+
     }
 
     private void Dive()
@@ -128,6 +147,25 @@ public class MovementController : MonoBehaviour
 
         // Finally perform a jump
         PerformJump();
+    }
+
+    private void IncreasePower()
+    {
+        if (_inBook)
+        {
+            if (_xLastPos == 0)
+            {
+                _xLastPos = transform.position.x;    
+                return;
+            }
+            
+            float dif = math.abs(transform.position.x - _xLastPos);
+            _xLastPos = transform.position.x;
+            _powerController.Modify(dif);
+            return;
+        }
+
+        _xLastPos = 0; // TODO Move elsewhere more performant
     }
 
     void OnCollisionEnter2D(Collision2D collision)

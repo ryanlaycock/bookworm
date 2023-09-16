@@ -361,6 +361,7 @@ GameObject:
   - component: {fileID: 467192252}
   - component: {fileID: 467192251}
   - component: {fileID: 467192253}
+  - component: {fileID: 467192254}
   m_Layer: 6
   m_Name: test-worm
   m_TagString: Player
@@ -495,6 +496,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canMove: 1
+--- !u!114 &467192254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 467192248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f7f91f4359552841ba13defe5c5dc00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxPower: 100
+  _doubleJumpPower: 50
+  _doubleJumpPowerUsage: 10
+  _powerIncreaseRate: 5
+  _currentPowerLevel: 50
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

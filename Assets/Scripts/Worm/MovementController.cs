@@ -52,6 +52,7 @@ public class MovementController : MonoBehaviour
             }
 
             _lastPos = transform.position;
+            _currentBook = RayCastBook(GetWormCenter(), Vector3.up);
             _rb.velocity = new Vector2(_inBookMoveSpeed * input, _rb.velocity.y);
             return;
         } 
@@ -110,7 +111,8 @@ public class MovementController : MonoBehaviour
     private void JumpOutBook()
     {      
         Debug.LogFormat("JUMPING OUT! {0}", _currentBook.GetCenterOfTop().y);
-        _rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY; // Unlock restraint
+        _rb.constraints = RigidbodyConstraints2D.None; // Unlock restraint
+        _rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Add rotation back
         transform.position = new Vector2(transform.position.x, _currentBook.GetCenterOfTop().y); // Put back on top of book, retaining x position
         
         // TODO Animate coming back out, presumably blocking

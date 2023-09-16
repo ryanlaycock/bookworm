@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 593432515936471933}
   - component: {fileID: 3612884307989526269}
   - component: {fileID: 2919341343888072696}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: top
-  m_TagString: Ground
+  m_TagString: BookTop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 593432515936471934}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 1.0000001, y: 0.5349995, z: 0}
+  m_LocalPosition: {x: 2, y: -0.0000023841858, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -70,8 +70,8 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: -0.5350548, y: -0.00032155862}
-  - {x: 4.1525493, y: 0.0003709857}
+  - {x: 0, y: 0}
+  - {x: 6.25, y: 0}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
@@ -87,8 +87,9 @@ GameObject:
   - component: {fileID: 584937392205242504}
   - component: {fileID: 593432516391090153}
   - component: {fileID: 593432516391090159}
+  - component: {fileID: 2369013119950211700}
   - component: {fileID: 593432516391090158}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Book2
   m_TagString: Book
   m_Icon: {fileID: 0}
@@ -149,10 +150,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1765878319
-  m_SortingLayer: 3
+  m_SortingLayerID: 2008617859
+  m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: a53b56ee5849c9444b1565d0cbeebb47, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 98d9156c5b23c1443aca156579b3adc0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -184,6 +185,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!114 &2369013119950211700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7047503445772262706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d66f4536c0895f4f8f5b0726dc25421, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameObject: {fileID: 7047503445772262706}
+  _bookCollider: {fileID: 593432516391090158}
+  _bookTopCollider: {fileID: 2919341343888072696}
 --- !u!61 &593432516391090158
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -197,16 +213,16 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.5, y: 2.3424826}
+  m_Offset: {x: 0.99, y: 3.125}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
-    oldSize: {x: 1, y: 4.6875}
+    oldSize: {x: 2, y: 6.25}
     newSize: {x: 1, y: 4.6875}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 4.684965}
+  m_Size: {x: 2, y: 6.25}
   m_EdgeRadius: 0

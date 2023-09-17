@@ -28,7 +28,7 @@ public class MovementController : MonoBehaviour
     private float _xLastPos;
     private PowerController _powerController;
     [SerializeField]
-    private GameManager _gm;
+    public GameManager _gm;
 
     void Start() {
         _rb = GetComponent<Rigidbody2D>();
@@ -173,32 +173,6 @@ public class MovementController : MonoBehaviour
         _xLastPos = 0; // TODO Move elsewhere more performant
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        // TODO Check if top of box is > bottom of player (stuck to side)
-        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("BookTop"))
-        {
-            _canJump = true;    
-            _jumpsRemaining = 2;
-            return;
-        }
-
-        if (collision.gameObject.CompareTag("Hole"))
-        {
-            Debug.Log("HERE");
-            _gm.WinRound();
-        }
-    }
-
-    void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("BookTop"))
-        {
-            _canJump = false;
-            return;
-        }
-    }
-
     private Book RayCastBook(Vector3 origin, Vector3 direction)
     {
         int layerMask = 1 << LayerMask.NameToLayer("Books");
@@ -221,6 +195,12 @@ public class MovementController : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public void SetGrounded(bool grounded)
+    {
+        _canJump = grounded;
+        if (grounded) _jumpsRemaining = 2;
     }
 
     private void PerformJump()

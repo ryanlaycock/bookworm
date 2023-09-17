@@ -7,6 +7,9 @@ TagManager:
   - Ground
   - Book
   - BookTop
+  - Worm
+  - Moth
+  - Hole
   layers:
   - Default
   - TransparentFX
@@ -55,4 +58,7 @@ TagManager:
     locked: 0
   - name: Level
     uniqueID: 2529088977
+    locked: 0
+  - name: Moth
+    uniqueID: 200508231
     locked: 0

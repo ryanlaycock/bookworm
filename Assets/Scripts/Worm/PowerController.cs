@@ -37,6 +37,7 @@ public class PowerController : MonoBehaviour
     public void Modify(float amount)
     {
         _currentPowerLevel += amount * _powerIncreaseRate;
+        if (_currentPowerLevel > 100) _currentPowerLevel = 100;
     }
 
     public void ModifyDoubleJump()

@@ -178,8 +178,9 @@ public class MovementController : MonoBehaviour
             return;
         }
 
-        if(collision.gameObject.name == "hole")
+        if (collision.gameObject.CompareTag("Hole"))
         {
+            Debug.Log("HERE");
             _gm.WinRound();
         }
     }

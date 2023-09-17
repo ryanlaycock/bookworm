@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     public float _gameSpeedUnitsPerSecond;
     [SerializeField]
     private GameObject _worm;
+    [SerializeField]
+    private GameObject _wall;
 
     void Start()
     {
@@ -23,19 +25,17 @@ public class GameManager : MonoBehaviour
     void FixedUpdate()
     {
         _wallPosX += _gameSpeedUnitsPerSecond;
-    }
+        _wall.transform.position = new Vector2(_wallPosX - 1, _wall.transform.position.y);
 
-    void Update()
-    {
         if (_worm.transform.position.x <= _wallPosX)
         {
             LoseRound();
             return;
         }
 
-        if (_worm.transform.position.x >= _levelEndX)
+        if (_worm.GetComponent<PowerController>().IsOverPowered())
         {
-            WinRound();
+            LoseRound();
             return;
         }
     }

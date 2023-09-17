@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,6 +21,15 @@ public class GameManager : MonoBehaviour
     void Start()
     {
 
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            LoseRound();
+            return;
+        }
     }
 
     void FixedUpdate()
@@ -43,10 +53,12 @@ public class GameManager : MonoBehaviour
     public void LoseRound()
     {
         Debug.Log("Game Over");
+        SceneManager.LoadScene("LostRoundScene");
     }
 
     public void WinRound()
     {
         Debug.Log("Game Won");
+        SceneManager.LoadScene("StartScene");
     }
 }

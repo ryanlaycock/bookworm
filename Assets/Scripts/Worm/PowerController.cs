@@ -31,7 +31,8 @@ public class PowerController : MonoBehaviour
 
     public bool IsOverPowered()
     {
-        return _currentPowerLevel >= _powerIncreaseRate;
+        if (_currentPowerLevel == 0 || _maxPower == 0) return false; // TODO Weird hack for timing issues
+        return _currentPowerLevel >= _maxPower;
     }
 
     public void Modify(float amount)

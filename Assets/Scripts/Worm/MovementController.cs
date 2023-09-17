@@ -29,6 +29,9 @@ public class MovementController : MonoBehaviour
     private PowerController _powerController;
     [SerializeField]
     public GameManager _gm;
+    [SerializeField]
+    private GameObject _bookDiggingPrefab;
+    private GameObject _bookDiggingObject;
 
     void Start() {
         _rb = GetComponent<Rigidbody2D>();
@@ -70,8 +73,17 @@ public class MovementController : MonoBehaviour
             }
 
             _lastPos = transform.position;
+            Book lastBook = _currentBook;
             _currentBook = RayCastBook(GetWormCenter(), Vector3.up);
+
+            if (lastBook.GetInstanceID() != _currentBook.GetInstanceID()) lastBook.SetIsWormIn(false);
+            _currentBook.SetIsWormIn(true);
+
             _rb.velocity = new Vector2(_inBookMoveSpeed * input, _rb.velocity.y);
+            if (_bookDiggingObject != null)
+            {
+                _bookDiggingObject.transform.position = new Vector3(_rb.transform.position.x, _currentBook.GetCenterOfTop().y + 0.5f, _bookDiggingObject.transform.position.z);
+            }            
             return;
         } 
 
@@ -127,18 +139,34 @@ public class MovementController : MonoBehaviour
 
         transform.position = new Vector2(transform.position.x, -20); // Ensure worm in middle x, but below screen out of sight.
         _rb.constraints = RigidbodyConstraints2D.FreezePositionY; // Temporarily
+        transform.localScale += new Vector3(-0.5f, 0, 0);
 
+        Book currentBookFront = RayCastBook(GetWormFrontCenter(), Vector3.up);
+        Book currentBookBack = RayCastBook(GetWormBackCenter(), Vector3.up);
+        if (currentBookBack == null || currentBookFront == null) // Entered book but one side of the worm is out
+        {
+            transform.position = new Vector2(book.GetCenter().x, -20); // Move into the middle of the book
+        }
         book.DiveInto(); // Might not need this?
+
+        _bookDiggingObject = Instantiate(_bookDiggingPrefab, new Vector3(transform.position.x, book.GetCenterOfTop().y + 0.5f, 1), Quaternion.identity);
+
         _canMove = true;
         _inBook = true;
+        _lastPos = transform.position;
     }
 
     private void JumpOutBook()
     {      
         _rb.constraints = RigidbodyConstraints2D.None; // Unlock restraint
         _rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Add rotation back
+        transform.localScale += new Vector3(+0.5f, 0, 0);
         transform.position = new Vector2(transform.position.x, _currentBook.GetCenterOfTop().y); // Put back on top of book, retaining x position
-        
+
+        Destroy(_bookDiggingObject);
+
+        // TODO Make sure its not clipping into another book
+
         // TODO Animate coming back out, presumably blocking
         
         // Reset to allow movement
@@ -226,9 +254,9 @@ public class MovementController : MonoBehaviour
 
     Vector2 GetWormCenter()
     {
-        Collider2D collider = GetComponent<Collider2D>();
-        float w = collider.bounds.size.x;
-        float h = collider.bounds.size.y;
+        Renderer renderer = GetComponent<Renderer>();
+        float w = renderer.bounds.size.x;
+        float h = renderer.bounds.size.y;
 
         return new Vector2(
             transform.position.x + (w/2),
@@ -238,9 +266,9 @@ public class MovementController : MonoBehaviour
 
     Vector2 GetWormFrontCenter()
     {
-        Collider2D collider = GetComponent<Collider2D>();
-        float w = collider.bounds.size.x;
-        float h = collider.bounds.size.y;
+        Renderer renderer = GetComponent<Renderer>();
+        float w = renderer.bounds.size.x;
+        float h = renderer.bounds.size.y;
 
         return new Vector2(
             transform.position.x + w,
@@ -250,8 +278,8 @@ public class MovementController : MonoBehaviour
 
     Vector2 GetWormBackCenter()
     {
-        Collider2D collider = GetComponent<Collider2D>();
-        float h = collider.bounds.size.y;
+        Renderer renderer = GetComponent<Renderer>();
+        float h = renderer.bounds.size.y;
 
         return new Vector2(
             transform.position.x,

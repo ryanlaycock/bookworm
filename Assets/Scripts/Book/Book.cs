@@ -9,11 +9,17 @@ public class Book : MonoBehaviour
     private Collider2D _bookCollider;
     [SerializeField]
     private EdgeCollider2D _bookTopCollider;
+    private bool isWormIn = false; // TODO not used yet
 
     // TODO Set edge collider to top programatically
     public void DiveInto()
     {
         
+    }
+
+    public void SetIsWormIn(bool x)
+    {
+        isWormIn = x;
     }
 
     public Vector2 GetCenter()

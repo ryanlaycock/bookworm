@@ -16,7 +16,7 @@ public class CameraController : MonoBehaviour
         
     void FixedUpdate()
     {
-        float camOnWorm = Mathf.Clamp( _worm.transform.position.x, transform.position.x - xOffset, transform.position.x + xOffset);
+        float camOnWorm = Mathf.Clamp(_worm.GetComponent<MovementController>().GetWormCenter().x, transform.position.x - xOffset, transform.position.x + xOffset);
 
         float lowestX = (float)Mathf.Max(
             camOnWorm,

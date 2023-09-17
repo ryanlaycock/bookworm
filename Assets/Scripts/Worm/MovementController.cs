@@ -82,7 +82,7 @@ public class MovementController : MonoBehaviour
             _rb.velocity = new Vector2(_inBookMoveSpeed * input, _rb.velocity.y);
             if (_bookDiggingObject != null)
             {
-                _bookDiggingObject.transform.position = new Vector3(_rb.transform.position.x, _currentBook.GetCenterOfTop().y + 0.5f, _bookDiggingObject.transform.position.z);
+                _bookDiggingObject.transform.position = new Vector3(GetWormCenter().x, _currentBook.GetCenterOfTop().y + 0.5f, _bookDiggingObject.transform.position.z);
             }            
             return;
         } 
@@ -149,7 +149,7 @@ public class MovementController : MonoBehaviour
         }
         book.DiveInto(); // Might not need this?
 
-        _bookDiggingObject = Instantiate(_bookDiggingPrefab, new Vector3(transform.position.x, book.GetCenterOfTop().y + 0.5f, 1), Quaternion.identity);
+        _bookDiggingObject = Instantiate(_bookDiggingPrefab, new Vector3(GetWormCenter().x, book.GetCenterOfTop().y + 0.5f, 1), Quaternion.identity);
 
         _canMove = true;
         _inBook = true;
@@ -252,7 +252,7 @@ public class MovementController : MonoBehaviour
         }
     }
 
-    Vector2 GetWormCenter()
+    public Vector2 GetWormCenter()
     {
         Renderer renderer = GetComponent<Renderer>();
         float w = renderer.bounds.size.x;

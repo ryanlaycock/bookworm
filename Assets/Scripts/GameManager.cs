@@ -29,14 +29,24 @@ public class GameManager : MonoBehaviour
     {
         if (_worm.transform.position.x <= _wallPosX)
         {
-            Debug.Log("GAME OVER!!");
+            LoseRound();
             return;
         }
 
         if (_worm.transform.position.x >= _levelEndX)
         {
-            Debug.Log("LEVEL COMPLETED!!");
+            WinRound();
             return;
         }
+    }
+
+    public void LoseRound()
+    {
+        Debug.Log("Game Over");
+    }
+
+    public void WinRound()
+    {
+        Debug.Log("Game Won");
     }
 }

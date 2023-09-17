@@ -8,8 +8,11 @@ using UnityEngine.UIElements;
 
 public class MovementController : MonoBehaviour
 {
+    [SerializeField]
     private float _moveSpeed = 5;
+    [SerializeField]
     private float _inBookMoveSpeed = 2;
+    [SerializeField]
     private float _jumpSpeed = 7;
     public bool _canMove = true;
     private Rigidbody2D _rb;
@@ -20,6 +23,8 @@ public class MovementController : MonoBehaviour
     private Vector3 _lastPos;
     private float _xLastPos;
     private PowerController _powerController;
+    [SerializeField]
+    private GameManager _gm;
 
     void Start() {
         _rb = GetComponent<Rigidbody2D>();
@@ -37,7 +42,6 @@ public class MovementController : MonoBehaviour
     void FixedUpdate()
     {
         IncreasePower();
-        Debug.Log(_powerController.GetCurrent());
     }
 
     private void MoveHorizontal()
@@ -52,7 +56,6 @@ public class MovementController : MonoBehaviour
             Book currentBookBack = RayCastBook(GetWormBackCenter(), Vector3.up);
             if (currentBookFront == null || currentBookBack == null) // Front or back of worm is trying to leave a book
             {
-                Debug.LogFormat("OUT OF BOUNDS, move to {0}", new Vector2(_currentBook.GetCenter().x, -20));
                 // We just moved out of a book, despite thinking we're in one. Means player is trying to leave
                 // Force them back to the middle of the last known book
                 // TODO Refactor this to be preventative not reactive
@@ -109,7 +112,6 @@ public class MovementController : MonoBehaviour
 
     private void DiveIntoBook(Book book)
     {
-        Debug.LogFormat("Diving into {0}", book);
         _currentBook = book;
 
         _canMove = false; // Temp to lock movement
@@ -118,7 +120,6 @@ public class MovementController : MonoBehaviour
 
         // TODO Animate diving in. Assuming this will block until we actually make contact?
 
-        Debug.LogFormat("Moving to {0}", new Vector2(transform.position.x, -20));
         transform.position = new Vector2(transform.position.x, -20); // Ensure worm in middle x, but below screen out of sight.
         _rb.constraints = RigidbodyConstraints2D.FreezePositionY; // Temporarily
 
@@ -129,7 +130,6 @@ public class MovementController : MonoBehaviour
 
     private void JumpOutBook()
     {      
-        Debug.LogFormat("JUMPING OUT! {0}", _currentBook.GetCenterOfTop().y);
         _rb.constraints = RigidbodyConstraints2D.None; // Unlock restraint
         _rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Add rotation back
         transform.position = new Vector2(transform.position.x, _currentBook.GetCenterOfTop().y); // Put back on top of book, retaining x position
@@ -175,8 +175,12 @@ public class MovementController : MonoBehaviour
         {
             _canJump = true;    
             _jumpsRemaining = 2;
-            Debug.Log("COLLIDED GROUND: resetting jumps");
             return;
+        }
+
+        if(collision.gameObject.name == "hole")
+        {
+            _gm.WinRound();
         }
     }
 
@@ -185,7 +189,6 @@ public class MovementController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("BookTop"))
         {
             _canJump = false;
-            Debug.Log("LEFT GROUND: resetting jumps");
             return;
         }
     }
@@ -200,7 +203,6 @@ public class MovementController : MonoBehaviour
         
         if (hit.collider != null)
         {
-            Debug.LogFormat("Hit {0}", hit.transform.gameObject.name);
             if (hit.collider.tag == "BookTop")
             {
                 // Hit a BookTop

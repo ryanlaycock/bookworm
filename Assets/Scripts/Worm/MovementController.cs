@@ -13,7 +13,11 @@ public class MovementController : MonoBehaviour
     [SerializeField]
     private float _inBookMoveSpeed = 2;
     [SerializeField]
-    private float _jumpSpeed = 7;
+    private float _jumpVelocity = 7f;
+    [SerializeField]
+    private float _fallMultiplier = 2.5f;
+    [SerializeField]
+    private float _lowJumpMultiplier = 2f;
     public bool _canMove = true;
     private Rigidbody2D _rb;
     private bool _canJump = false;
@@ -36,6 +40,7 @@ public class MovementController : MonoBehaviour
     {
         MoveHorizontal();
         Jump();
+        GravityModifier();
         Dive();
     }
 
@@ -220,9 +225,23 @@ public class MovementController : MonoBehaviour
 
     private void PerformJump()
     {
-        _rb.velocity = new Vector2(_rb.velocity.x, _jumpSpeed);
+        _rb.velocity = Vector2.up * _jumpVelocity;
         _canJump = false;
         _jumpsRemaining --;
+    }
+
+    private void GravityModifier()
+    {
+        if (_rb.velocity.y < 0) // Falling down
+        {
+            // Increase velocity down
+            _rb.velocity += Vector2.up * Physics2D.gravity.y * (_fallMultiplier - 1) * Time.deltaTime;
+        }
+        else if (_rb.velocity.y > 0 && !Input.GetKey(KeyCode.W)) // Jumping but not holding jump key
+        {
+            // Slow velocity up
+            _rb.velocity += Vector2.up * Physics2D.gravity.y * (_lowJumpMultiplier - 1) * Time.deltaTime;
+        }
     }
 
     Vector2 GetWormCenter()

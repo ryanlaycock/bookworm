@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 593432515936471933}
   - component: {fileID: 3612884307989526269}
-  - component: {fileID: 2919341343888072696}
+  - component: {fileID: 1354188154614924809}
   m_Layer: 7
   m_Name: top
   m_TagString: BookTop
@@ -25,14 +25,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 593432515936471934}
-  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 2, y: -0.0000023841858, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 584937392205242504}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &3612884307989526269
 Rigidbody2D:
   serializedVersion: 4
@@ -54,7 +54,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 7
---- !u!68 &2919341343888072696
+--- !u!68 &1354188154614924809
 EdgeCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -70,8 +70,8 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: 0, y: 0}
-  - {x: 6.25, y: 0}
+  - {x: 0, y: 2}
+  - {x: 4.6875, y: 2}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 593432516391090153}
   - component: {fileID: 593432516391090159}
   - component: {fileID: 2369013119950211700}
-  - component: {fileID: 593432516391090158}
+  - component: {fileID: 3733882575669637511}
   m_Layer: 7
   m_Name: H75x32
   m_TagString: Book
@@ -103,15 +103,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7047503445772262706}
-  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.34375, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 593432515936471933}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &593432516391090153
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -153,7 +153,7 @@ SpriteRenderer:
   m_SortingLayerID: 2008617859
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 98d9156c5b23c1443aca156579b3adc0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9cbd2e8aaf135d045b00af69f9a4981a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -163,7 +163,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!50 &593432516391090159
 Rigidbody2D:
   serializedVersion: 4
@@ -198,9 +198,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameObject: {fileID: 7047503445772262706}
-  _bookCollider: {fileID: 593432516391090158}
-  _bookTopCollider: {fileID: 2919341343888072696}
---- !u!61 &593432516391090158
+  _bookCollider: {fileID: 3733882575669637511}
+  _bookTopCollider: {fileID: 1354188154614924809}
+--- !u!61 &3733882575669637511
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -209,20 +209,20 @@ BoxCollider2D:
   m_GameObject: {fileID: 7047503445772262706}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: 2451865f07a08f04bbfe22635acfdda0, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.99, y: 3.125}
+  m_Offset: {x: 2.34375, y: 0.99767524}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
-    oldSize: {x: 2, y: 6.25}
+    oldSize: {x: 4.6875, y: 2}
     newSize: {x: 1, y: 4.6875}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2, y: 6.25}
+  m_Size: {x: 4.6875, y: 1.9953505}
   m_EdgeRadius: 0

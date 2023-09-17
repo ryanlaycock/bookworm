@@ -107,7 +107,7 @@ public class MovementController : MonoBehaviour
             return;
         }
 
-        if (_jumpsRemaining > 0 && _powerController.CanDoubleJump()) // Double Jump
+        if (_jumpsRemaining == 1 && _powerController.CanDoubleJump()) // Double Jump
         {
             _powerController.ModifyDoubleJump();
             PerformJump();

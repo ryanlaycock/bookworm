@@ -248,6 +248,7 @@ public class MovementController : MonoBehaviour
 
     public void SetGrounded(bool grounded)
     {
+        Debug.LogFormat("GROUNDED {0}", grounded);
         _isGrounded = grounded;
         _canJump = grounded;
         if (grounded) _jumpsRemaining = 2;

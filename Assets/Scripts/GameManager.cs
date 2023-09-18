@@ -33,6 +33,13 @@ public class GameManager : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (_wallPosX + 20 >= _levelEndX)
+        {
+            // Wall got to the end of the round
+            LoseRound();
+            return;
+        }
+        
         _wallPosX += _gameSpeedUnitsPerSecond;
         _wall.transform.position = new Vector2(_wallPosX - 1, _wall.transform.position.y);
 

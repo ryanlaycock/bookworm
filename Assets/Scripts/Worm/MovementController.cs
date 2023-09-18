@@ -21,6 +21,7 @@ public class MovementController : MonoBehaviour
     public bool _canMove = true;
     private Rigidbody2D _rb;
     private bool _canJump = false;
+    private bool _isGrounded = false;
     private int _jumpsRemaining = 2;
     private bool _inBook = false;
     private Book _currentBook = null;
@@ -32,6 +33,8 @@ public class MovementController : MonoBehaviour
     [SerializeField]
     private GameObject _bookDiggingPrefab;
     private GameObject _bookDiggingObject;
+    [SerializeField]
+    private Animator _animator;
 
     void Start() {
         _rb = GetComponent<Rigidbody2D>();
@@ -45,6 +48,7 @@ public class MovementController : MonoBehaviour
         Jump();
         GravityModifier();
         Dive();
+        Animator();
     }
 
     void FixedUpdate()
@@ -82,7 +86,7 @@ public class MovementController : MonoBehaviour
             _rb.velocity = new Vector2(_inBookMoveSpeed * input, _rb.velocity.y);
             if (_bookDiggingObject != null)
             {
-                _bookDiggingObject.transform.position = new Vector3(GetWormCenter().x, _currentBook.GetCenterOfTop().y + 0.5f, _bookDiggingObject.transform.position.z);
+                _bookDiggingObject.transform.position = new Vector3(GetWormCenter().x, _currentBook.GetCenterOfTop().y, _bookDiggingObject.transform.position.z);
             }            
             return;
         } 
@@ -116,9 +120,22 @@ public class MovementController : MonoBehaviour
 
     }
 
+    private void Animator()
+    {
+        // Flip srpite if moving backwards
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+        if (_canMove)
+        {
+            renderer.flipX = _rb.velocity.x < 0;    
+        }
+        
+        // Set animation speed
+        _animator.SetFloat("Speed", Mathf.Abs(_rb.velocity.x));
+    }
+
     private void Dive()
     {
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.S) && _isGrounded)
         {
             Book book = RayCastBook(GetWormCenter(), Vector3.down);
             if (book != null) {
@@ -135,8 +152,13 @@ public class MovementController : MonoBehaviour
         _canJump = false;
         _rb.velocity = Vector3.zero; // Remove all current speed
 
-        // TODO Animate diving in. Assuming this will block until we actually make contact?
+        _animator.SetBool("IsDiving", true);
+        // This triggers the diving animation, which on completion calls DivingIntoBookDone() to finish dive logic
+    }
 
+    public void DivingIntoBookDone()
+    {
+        _animator.SetBool("IsDiving", false);
         transform.position = new Vector2(transform.position.x, -20); // Ensure worm in middle x, but below screen out of sight.
         _rb.constraints = RigidbodyConstraints2D.FreezePositionY; // Temporarily
         transform.localScale += new Vector3(-0.5f, 0, 0);
@@ -145,11 +167,10 @@ public class MovementController : MonoBehaviour
         Book currentBookBack = RayCastBook(GetWormBackCenter(), Vector3.up);
         if (currentBookBack == null || currentBookFront == null) // Entered book but one side of the worm is out
         {
-            transform.position = new Vector2(book.GetCenter().x, -20); // Move into the middle of the book
+            transform.position = new Vector2(_currentBook.GetCenter().x, -20); // Move into the middle of the book
         }
-        book.DiveInto(); // Might not need this?
 
-        _bookDiggingObject = Instantiate(_bookDiggingPrefab, new Vector3(GetWormCenter().x, book.GetCenterOfTop().y + 0.5f, 1), Quaternion.identity);
+        _bookDiggingObject = Instantiate(_bookDiggingPrefab, new Vector3(GetWormCenter().x, _currentBook.GetCenterOfTop().y, 1), Quaternion.identity);
 
         _canMove = true;
         _inBook = true;
@@ -227,6 +248,7 @@ public class MovementController : MonoBehaviour
 
     public void SetGrounded(bool grounded)
     {
+        _isGrounded = grounded;
         _canJump = grounded;
         if (grounded) _jumpsRemaining = 2;
     }
@@ -255,11 +277,10 @@ public class MovementController : MonoBehaviour
     public Vector2 GetWormCenter()
     {
         Renderer renderer = GetComponent<Renderer>();
-        float w = renderer.bounds.size.x;
         float h = renderer.bounds.size.y;
 
         return new Vector2(
-            transform.position.x + (w/2),
+            transform.position.x,
             transform.position.y + (h/2)
         );
     }
@@ -271,7 +292,7 @@ public class MovementController : MonoBehaviour
         float h = renderer.bounds.size.y;
 
         return new Vector2(
-            transform.position.x + w,
+            transform.position.x + (w/2),
             transform.position.y + (h/2)
         );
     }
@@ -279,10 +300,11 @@ public class MovementController : MonoBehaviour
     Vector2 GetWormBackCenter()
     {
         Renderer renderer = GetComponent<Renderer>();
+        float w = renderer.bounds.size.x;
         float h = renderer.bounds.size.y;
 
         return new Vector2(
-            transform.position.x,
+            transform.position.x - (w/2),
             transform.position.y + (h/2)
         );
     }
